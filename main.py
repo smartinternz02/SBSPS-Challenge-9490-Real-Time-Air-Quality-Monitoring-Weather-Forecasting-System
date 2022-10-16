@@ -6,12 +6,7 @@ import requests
 # Flask constructor
 app = Flask(__name__)
 
-
-@app.route('/')
-def home():
-	return "<h1>Hello</h1>"
-
-@app.route('/submit',methods=["POST","GET"])
+@app.route('/',methods=["POST","GET"])
 def submit():
 	if request.method == "POST":
 		city = request.form.get("CITY")
@@ -28,7 +23,6 @@ def submit():
 		toul = request.form.get("TOULENE")
 		xyl = request.form.get("XYLENE")
 
-		# NOTE: you must manually set API_KEY below using information retrieved from your IBM Cloud account.
 		API_KEY = "nBgFH1X8-vTgXCetSWFduXxaymgHu-ZdiMZTU45Ojnz3"
 		token_response = requests.post('https://iam.cloud.ibm.com/identity/token', data={"apikey":
 		API_KEY, "grant_type": 'urn:ibm:params:oauth:grant-type:apikey'})
@@ -36,7 +30,6 @@ def submit():
 
 		header = {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + mltoken}
 
-		# NOTE: manually define and pass the array(s) of values to be scored in the next line
 		payload_scoring = {"input_data": [{"field": [['City','PM2.5','PM10','NO','NO2''NOx','NH3','CO','SO3','O3','Benzene','Toluene','Xylene']], "values": [[city,pm2,pm10,no,no2,nox,nh3,co,so2,o3,benz,toul,xyl]]}]}
 
 		response_scoring = requests.post('https://us-south.ml.cloud.ibm.com/ml/v4/deployments/397c6a38-0393-4d72-8a4a-c7a8e962e9a9/predictions?version=2022-10-16', json=payload_scoring,
