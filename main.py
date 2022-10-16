@@ -40,7 +40,7 @@ def submit():
 		pred=str(pred)
 		return "Your Air Quality Index is " + pred
 	else:
-		return render_template("sample.html")
+		return render_template("index.html")
 
 if __name__=='__main__':
 	app.run()
